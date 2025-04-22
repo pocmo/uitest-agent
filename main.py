@@ -21,6 +21,7 @@ async def async_main():
     args = parse_args()
     
     model_to_use = args.model if args.model else DEFAULT_MODEL
+    target = args.target
     
     session_service = InMemorySessionService()
 
@@ -33,7 +34,7 @@ async def async_main():
         state={}, app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID
     )
 
-    root_agent, exit_stack = await get_agent_async(model_to_use)
+    root_agent, exit_stack = await get_agent_async(model_to_use, target)
 
     runner = Runner(
         agent=root_agent,

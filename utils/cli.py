@@ -7,4 +7,6 @@ def parse_args():
                     default="Take a screenshot of the currently running Android device and describe what you see.")
     parser.add_argument("--model", type=str, help="Model to use for the agent (overrides config file)",
                     default=None)
+    parser.add_argument("--target", type=str, choices=["mobile", "web"], 
+                    help="Target platform for the agent (required)", required=True)
     return parser.parse_args()
