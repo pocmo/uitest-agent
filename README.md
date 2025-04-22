@@ -19,11 +19,18 @@ A natural language-based agent for automating UI testing on mobile devices and w
    ```
    python main.py --target [mobile|web] --query "YOUR_TEST_INSTRUCTION"
    ```
+   
+   Or pipe content from a file or another command:
+   ```
+   cat test_prompt.txt | python main.py --target [mobile|web]
+   echo "Check the login screen" | python main.py --target mobile
+   ```
 
 ## Note
 - Mobile MCP server is available as a remote service by default
 - Local MCP installation is optional (~/Projects/mobile-mcp)
 - The `--target` parameter is required and must be either `mobile` or `web`
+- When `--query` is not provided, the tool reads from stdin, enabling piped inputs
 
 ## Examples
 
