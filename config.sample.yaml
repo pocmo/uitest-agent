@@ -12,3 +12,6 @@ model_name: "gemini-2.5-pro-preview-03-25"
 
 # Optional: Path to local mobile MCP tool (if not specified, will use npx -y mobilenext/mobile-mcp@latest)
 # mobile_mcp_path: "/path/to/local/mobile-mcp/index.js"
+
+# Optional: Path to local web MCP tool (if not specified, will use npx @playwright/mcp@latest)
+# web_mcp_path: "/path/to/local/playwright-mcp/index.js"
