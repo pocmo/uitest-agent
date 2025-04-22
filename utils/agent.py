@@ -18,26 +18,27 @@ def load_instruction(target=None):
     with open(instruction_path, 'r') as f:
         instruction = f.read()
     
-    # If the target is mobile, append mobile-specific instructions
-    if target == "mobile":
-        mobile_instruction_path = Path(__file__).parent.parent / "prompts" / "mobile_instruction.txt"
-        if mobile_instruction_path.exists():
-            with open(mobile_instruction_path, 'r') as f:
-                mobile_instruction = f.read()
-            instruction = f"{instruction}\n\n{mobile_instruction}"
+    # Append target-specific instructions if available
+    if target:
+        target_instruction_path = Path(__file__).parent.parent / "prompts" / f"{target}_instruction.txt"
+        if target_instruction_path.exists():
+            with open(target_instruction_path, 'r') as f:
+                target_instruction = f.read()
+            instruction = f"{instruction}\n\n{target_instruction}"
         else:
-            print(f"Warning: {mobile_instruction_path} not found. Using base instruction only.")
+            print(f"Warning: {target_instruction_path} not found. Using base instruction only.")
     
     return instruction
 
-async def get_agent_async(model_name, target=None):
+async def get_agent_async(model_name, target="mobile"):
     """Creates an ADK Agent equipped with tools from the MCP Server.
     
     Args:
         model_name: The name of the model to use
         target: The target platform (mobile or web)
     """
-    tools, exit_stack = await get_tools_async()
+    # Get the appropriate tools based on the target
+    tools, exit_stack = await get_tools_async(target)
     
     # Load instruction from file with the target platform
     instruction = load_instruction(target)

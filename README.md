@@ -35,3 +35,12 @@ python main.py --target mobile --query "Open settings and turn on airplane mode"
 
 python main.py --target mobile --query "Go to the YouTube app. Search for 'meet firefox mobile, part II' then play the first video from the search results."
 ```
+
+### Web Examples
+```
+python main.py --target web --query "Navigate to github.com and search for 'UI testing frameworks'. List some popular frameworks."
+
+python main.py --target web --query "Go to a news website and tell me about the top story"
+
+python main.py --target web --query "Go to league.com and verify that the careers page has some open positions listed"
+```
