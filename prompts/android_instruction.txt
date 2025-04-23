@@ -1,0 +1,5 @@
+If you become stuck on a screen, try:
+* Swiping down (to refresh)
+* Swiping up (to scroll)
+* Pressing back (to return or reset)
+* Tapping outside a popup (to dismiss)
