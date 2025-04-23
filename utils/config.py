@@ -6,7 +6,7 @@ def load_config():
     """Load configuration from config.yaml file."""
     config_path = Path(__file__).parent.parent / "config.yaml"
     if not config_path.exists():
-        print(f"Warning: {config_path} not found. Using default values or environment variables.")
+        print("No config.yaml found. See config.sample.yaml for reference and create your own config.yaml.")
         return {}
         
     with open(config_path, 'r') as f:
@@ -16,8 +16,15 @@ def setup_environment():
     """Set up environment variables from config."""
     config = load_config()
     
-    os.environ["GOOGLE_API_KEY"] = config.get('google_api_key', os.environ.get('GOOGLE_API_KEY', ''))
-    os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = str(config.get('use_vertex_ai', False)).lower()
+    # Check for API key in config or environment
+    if not config.get('google_api_key') and not os.environ.get('GOOGLE_API_KEY'):
+        print("Warning: No Google API key found. Set in config.yaml or as GOOGLE_API_KEY environment variable.")
+    
+    # Set environment variables from config if provided
+    if 'google_api_key' in config:
+        os.environ["GOOGLE_API_KEY"] = config.get('google_api_key')
+    if 'use_vertex_ai' in config:
+        os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = str(config.get('use_vertex_ai')).lower()
     
     return config
 

@@ -1,6 +1,7 @@
 import asyncio
 import warnings
 import logging
+import uuid
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from rich.console import Console
@@ -12,6 +13,7 @@ from utils.cli import parse_args
 from utils.display import print_agent_events
 from utils.interactions import process_agent_interaction
 
+# Suppress warnings and reduce logging noise for cleaner output
 warnings.filterwarnings("ignore")
 logging.basicConfig(level=logging.ERROR)
 
@@ -30,10 +32,10 @@ async def async_main():
     
     session_service = InMemorySessionService()
 
-    # Define constants for identifying the interaction context
+    # Define app name and generate random session ID
     APP_NAME = "ui-test-agent"
-    USER_ID = "user_1"
-    SESSION_ID = "session_001" # Using a fixed ID for simplicity
+    USER_ID = "user"
+    SESSION_ID = str(uuid.uuid4())
 
     session_service.create_session(
         state={}, app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID
