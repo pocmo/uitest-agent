@@ -5,6 +5,7 @@ from rich.panel import Panel
 from rich.text import Text
 from rich import box
 from rich.table import Table
+from rich.markdown import Markdown
 
 from utils.events import (
     AgentEvent, UserQueryEvent, AgentResponseEvent, ToolCallEvent,
@@ -24,7 +25,9 @@ def print_agent_instructions(instructions: str) -> None:
     # Create a table for instructions with padding
     instructions_table = Table(box=box.SIMPLE, show_header=False, padding=(0, 2))
     instructions_table.add_column("Instructions")
-    instructions_table.add_row(instructions)
+    
+    # Use Markdown rendering to handle **bold** text in instructions
+    instructions_table.add_row(Markdown(instructions))
     
     console.print(Panel(
         instructions_table,
@@ -76,7 +79,10 @@ async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None]):
             # Create a table for user query with padding
             user_table = Table(box=box.SIMPLE, show_header=False, padding=(0, 2))
             user_table.add_column("Query")
-            user_table.add_row(event.query)
+            
+            # Truncate query to remove empty lines at the end and render as markdown
+            truncated_query = event.query.rstrip()
+            user_table.add_row(Markdown(truncated_query))
             
             console.print(Panel(
                 user_table, 
@@ -95,7 +101,9 @@ async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None]):
             # Create a table for agent response with padding
             agent_table = Table(box=box.SIMPLE, show_header=False, padding=(0, 2))
             agent_table.add_column("Response")
-            agent_table.add_row(truncated_text)
+            
+            # Use Markdown rendering
+            agent_table.add_row(Markdown(truncated_text))
             
             console.print(Panel(
                 agent_table,
@@ -133,7 +141,9 @@ async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None]):
             # Create a table for final response with padding
             final_table = Table(box=box.SIMPLE, show_header=False, padding=(0, 2))
             final_table.add_column("Response")
-            final_table.add_row(f"📝 {truncated_text}")
+            
+            # Use Markdown rendering
+            final_table.add_row(Markdown(truncated_text))
             
             console.print(Panel(
                 final_table,
