@@ -8,7 +8,7 @@ def parse_args():
                     default=None)
     parser.add_argument("--model", type=str, help="Model to use for the agent (overrides config file)",
                     default=None)
-    parser.add_argument("--target", type=str, choices=["mobile", "web"], 
+    parser.add_argument("--target", type=str, choices=["android", "ios", "web"], 
                     help="Target platform for the agent (required)", required=True)
     
     args = parser.parse_args()
