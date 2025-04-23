@@ -15,5 +15,5 @@ If an action causes an error or unexpected state:
 * Attempt to recover gracefully by navigating back or reloading the view.
 * If recovery fails, stop and report the failure with context.
 
-Log each interaction and observation clearly.
+Log each interaction, observation and verification clearly.
 Capture relevant element attributes (e.g., text, IDs, bounds) during interactions.

@@ -1,4 +1,5 @@
 google-adk
 litellm
 pyyaml
+rich
 
