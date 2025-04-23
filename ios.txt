@@ -1,0 +1,17 @@
+Use the SDK presenter app.
+
+If you need to login, use the following credentials:
+* E-Mail: web-e2e+health-profile@league.com
+* Password: 12345678
+
+Go to the Health Journey SDK (LeagueJourney).
+Verify that there is at least one health
+program active. Select it and 
+
+Important:  After going through the steps and
+finishing all verifications THEN you are done.
+No need for further actions or resetting the app, just STOP.
+
+Along the way, explain your reasoning and why you are doing
+certain things. Especially if they are not obviously following
+the steps.

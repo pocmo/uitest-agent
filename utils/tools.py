@@ -2,8 +2,12 @@ import asyncio
 from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters
 from utils.config import load_config
 
-async def get_mobile_tools_async():
-    """Gets tools from the mobile MCP server."""
+async def get_mobile_tools_async(platform=None):
+    """Gets tools from the mobile MCP server.
+    
+    Args:
+        platform: Optional specific mobile platform (android or ios)
+    """
     config = load_config()
     
     # Default to using the released version via npx
@@ -44,21 +48,24 @@ async def get_web_tools_async():
     )
     return tools, exit_stack
 
-async def get_tools_async(target="mobile"):
+async def get_tools_async(target):
     """Gets tools from the appropriate MCP server based on the target.
     
     Args:
-        target: The target platform, either "mobile" or "web".
+        target: The target platform, either "android", "ios", or "web".
         
     Returns:
         A tuple of (tools, exit_stack).
         
     Raises:
-        ValueError: If the target is not one of "mobile" or "web".
+        ValueError: If the target is not one of "android", "ios", or "web".
     """
-    if target.lower() == "mobile":
-        return await get_mobile_tools_async()
-    elif target.lower() == "web":
+    target = target.lower()
+    if target == "android":
+        return await get_mobile_tools_async(platform="android")
+    elif target == "ios":
+        return await get_mobile_tools_async(platform="ios")
+    elif target == "web":
         return await get_web_tools_async()
     else:
-        raise ValueError(f"Unsupported target: {target}. Must be 'mobile' or 'web'.")
+        raise ValueError(f"Unsupported target: {target}. Must be 'android', 'ios', or 'web'.")
