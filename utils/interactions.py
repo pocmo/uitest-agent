@@ -36,8 +36,11 @@ async def process_agent_interaction(
     # Process agent's response
     try:
         async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=content):
-            # Process intermediate agent responses
-            if event.content and event.content.parts:
+            # Check if this is a final response first
+            is_final = event.is_final_response()
+            
+            # Process intermediate agent responses (only if not a final response)
+            if not is_final and event.content and event.content.parts:
                 intermediate_text = event.content.parts[0].text
                 if intermediate_text:  # Skip None or empty text
                     yield AgentResponseEvent(intermediate_text)
@@ -48,7 +51,7 @@ async def process_agent_interaction(
                 yield ToolCallEvent(call.name, call.args)
             
             # Handle final response
-            if event.is_final_response():
+            if is_final:
                 if event.content and event.content.parts:
                     final_response_text = event.content.parts[0].text
                 elif event.actions and event.actions.escalate:
