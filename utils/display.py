@@ -56,8 +56,7 @@ def print_agent_info(agent_name: str, model_name: str, tools_count: int, target:
         try:
             # Try to access the model attribute directly
             clean_model_name = model_name.model
-        except (AttributeError, Exception):
-            # Fallback to original if attribute access fails
+        except AttributeError:
             clean_model_name = model_name
     
     # Format agent creation debug output with Rich
