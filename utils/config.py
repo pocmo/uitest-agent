@@ -31,3 +31,7 @@ def setup_environment():
 def get_default_model(config):
     """Get the default model name from config."""
     return config.get('model_name', "gemini-2.5-pro-preview-03-25")
+
+def use_litellm(config):
+    """Check if LiteLLM should be used based on config."""
+    return config.get('use_litellm', False)

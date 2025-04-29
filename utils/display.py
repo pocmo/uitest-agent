@@ -40,7 +40,7 @@ def print_agent_instructions(instructions: str) -> None:
     ))
     console.print()
 
-def print_agent_info(agent_name: str, model_name: str, tools_count: int, target: str) -> None:
+def print_agent_info(agent_name: str, model_name: str, tools_count: int, target: str, use_litellm: bool = False) -> None:
     """Print information about the created agent using Rich formatting.
     
     Args:
@@ -48,6 +48,7 @@ def print_agent_info(agent_name: str, model_name: str, tools_count: int, target:
         model_name: Name of the model used
         tools_count: Number of tools available
         target: Target platform (android, ios, or web)
+        use_litellm: Whether LiteLLM is being used
     """
     # Format agent creation debug output with Rich
     agent_info = Text()
@@ -56,7 +57,15 @@ def print_agent_info(agent_name: str, model_name: str, tools_count: int, target:
     agent_info.append(f"{agent_name}", style="cyan bold")
     agent_info.append(f"' created using model '", style="dim")
     agent_info.append(f"{model_name}", style="green")
-    agent_info.append(f"' with ", style="dim")
+    
+    # Add LiteLLM status in parentheses after the model name
+    litellm_status = "True" if use_litellm else "False"
+    litellm_style = "green bold" if use_litellm else "red"
+    agent_info.append(f" (LiteLLM: ", style="dim")
+    agent_info.append(f"{litellm_status}", style=litellm_style)
+    agent_info.append(f")'", style="dim")
+    
+    agent_info.append(f" with ", style="dim")
     agent_info.append(f"{tools_count}", style="yellow bold")
     agent_info.append(" tools from MCP server.", style="dim")
     

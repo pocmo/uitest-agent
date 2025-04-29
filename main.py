@@ -7,7 +7,7 @@ from google.adk.sessions import InMemorySessionService
 from rich.console import Console
 
 # Import from our modular structure
-from utils.config import setup_environment, get_default_model
+from utils.config import setup_environment, get_default_model, use_litellm
 from utils.agent import get_agent_async
 from utils.cli import parse_args
 from utils.display import print_agent_events
@@ -20,6 +20,7 @@ logging.basicConfig(level=logging.ERROR)
 # Load configuration and setup environment
 config = setup_environment()
 DEFAULT_MODEL = get_default_model(config)
+USE_LITELLM = use_litellm(config)
 
 # Initialize Rich console
 console = Console()
@@ -41,7 +42,7 @@ async def async_main():
         state={}, app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID
     )
 
-    root_agent, exit_stack = await get_agent_async(model_to_use, target)
+    root_agent, exit_stack = await get_agent_async(model_to_use, target, USE_LITELLM)
 
     runner = Runner(
         agent=root_agent,
