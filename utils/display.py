@@ -45,25 +45,35 @@ def print_agent_info(agent_name: str, model_name: str, tools_count: int, target:
     
     Args:
         agent_name: Name of the agent
-        model_name: Name of the model used
+        model_name: Name of the model used (string or LiteLLM object)
         tools_count: Number of tools available
         target: Target platform (android, ios, or web)
         use_litellm: Whether LiteLLM is being used
     """
+    # Extract clean model name if it's a LiteLLM object
+    clean_model_name = model_name
+    if use_litellm and not isinstance(model_name, str):
+        try:
+            # Try to access the model attribute directly
+            clean_model_name = model_name.model
+        except AttributeError:
+            clean_model_name = model_name
+    
     # Format agent creation debug output with Rich
     agent_info = Text()
     agent_info.append("🤖 ", style="bold")
     agent_info.append(f"Agent '", style="dim")
     agent_info.append(f"{agent_name}", style="cyan bold")
     agent_info.append(f"' created using model '", style="dim")
-    agent_info.append(f"{model_name}", style="green")
+    agent_info.append(f"{clean_model_name}", style="green")
+    agent_info.append(f"'", style="dim")
     
     # Add LiteLLM status in parentheses after the model name
     litellm_status = "True" if use_litellm else "False"
     litellm_style = "green bold" if use_litellm else "red"
     agent_info.append(f" (LiteLLM: ", style="dim")
     agent_info.append(f"{litellm_status}", style=litellm_style)
-    agent_info.append(f")'", style="dim")
+    agent_info.append(f")", style="dim")
     
     agent_info.append(f" with ", style="dim")
     agent_info.append(f"{tools_count}", style="yellow bold")
