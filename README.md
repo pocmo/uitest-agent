@@ -1,6 +1,6 @@
 # UI Test Agent
 
-A natural language-based agent for automating UI testing on mobile devices and web applications using Google's Gemini AI models. This tool allows testers and developers to write test instructions in plain English and have them executed on Android, iOS, or web platforms.
+A natural language-based agent for automating UI testing on mobile devices and web applications using Google's Agent Development Kit (ADK). This tool allows testers and developers to write test instructions in plain English and have them executed on Android, iOS, or web platforms.
 
 > **Note:** This is a prototype/experimental project. While functional, it is not yet ready for production use. Use at your own risk.
 
@@ -8,7 +8,8 @@ A natural language-based agent for automating UI testing on mobile devices and w
 
 - Natural language interface for UI automation and testing
 - Cross-platform support (Android, iOS, Web)
-- Integration with Google's Gemini AI models
+- Integration with Google's Agent Development Kit (ADK)
+- Support for both Gemini models and local models through LiteLLM
 - Support for complex, multi-step test scenarios
 - Real-time feedback and test results
 
@@ -61,9 +62,23 @@ The `config.yaml` file supports the following options:
 
 - `google_api_key`: Your Google API key for Gemini models
 - `use_vertex_ai`: Boolean to use Google Cloud Vertex AI (default: false)
-- `model_name`: The Gemini model to use (default: "gemini-2.5-pro-preview-03-25")
+- `model_name`: The model to use (default: "gemini-2.5-pro-preview-03-25")
+- `use_litellm`: Boolean to use LiteLLM for local models (default: false)
 - `mobile_mcp_path`: Optional path to local mobile-mcp installation
 - `web_mcp_path`: Optional path to local playwright-mcp installation
+
+## Model Options
+
+The UI Test Agent supports two ways to use models:
+
+1. **Google Gemini Models**: By default, the agent uses Gemini models from Google. Set `use_litellm: false` in your config.
+
+2. **Local Models via LiteLLM**: For local model support (such as Ollama, LLaMA, etc.), set `use_litellm: true` in your config. This allows you to:
+   - Run the agent with local models for offline use
+   - Use custom or open source models
+   - Avoid API costs by using locally deployed models
+
+When using LiteLLM, the `model_name` in your config should follow LiteLLM's model naming convention (e.g., "ollama_chat/llama3.2").
 
 ## Usage Notes
 

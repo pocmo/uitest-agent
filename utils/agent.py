@@ -1,4 +1,5 @@
 from google.adk.agents import Agent
+from google.adk.models.lite_llm import LiteLlm
 from utils.tools import get_tools_async
 from utils.display import print_agent_instructions, print_agent_info
 from pathlib import Path
@@ -45,12 +46,13 @@ def load_instruction(target=None):
     
     return instruction
 
-async def get_agent_async(model_name, target):
+async def get_agent_async(model_name, target, use_litellm=False):
     """Creates an ADK Agent equipped with tools from the MCP Server.
     
     Args:
         model_name: The name of the model to use
         target: The target platform (android, ios, or web)
+        use_litellm: Whether to use LiteLLM wrapper for the model
     """
     # Get the appropriate tools based on the target
     tools, exit_stack = await get_tools_async(target)
@@ -61,16 +63,22 @@ async def get_agent_async(model_name, target):
     # Print the combined instructions using the dedicated display function
     print_agent_instructions(instruction)
     
+    # Determine whether to use LiteLLM based on passed parameter
+    if use_litellm:
+        model = LiteLlm(model=model_name)
+    else:
+        model = model_name
+
     # Create the agent
     root_agent = Agent(
         name="uitesting_agent_v1",
-        model=model_name,
+        model=model,
         description="Provide UI testing services",
         instruction=instruction,
         tools=tools,
     )
     
     # Print agent information using the dedicated display function
-    print_agent_info(root_agent.name, model_name, len(tools), target)
+    print_agent_info(root_agent.name, root_agent.model, len(tools), target, use_litellm)
     
     return root_agent, exit_stack
