@@ -9,7 +9,8 @@ from rich.markdown import Markdown
 
 from utils.events import (
     AgentEvent, UserQueryEvent, AgentResponseEvent, ToolCallEvent,
-    FinalResponseEvent, ConversationStartEvent, ConversationEndEvent, ErrorEvent
+    FinalResponseEvent, ConversationStartEvent, ConversationEndEvent, ErrorEvent,
+    ToolResponseEvent
 )
 
 # Initialize Rich console
@@ -152,7 +153,11 @@ async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None]):
                 width=100,
                 expand=False
             ))
-        
+
+        elif isinstance(event, ToolResponseEvent):
+            # Display a simple line instead of a full panel for tool responses
+            console.print(f"[dim blue]← Received response from tool[/dim blue] [bold blue]{event.name}[/bold blue]")
+
         elif isinstance(event, FinalResponseEvent):
             # Truncate final response text to remove empty lines at the end
             truncated_text = event.text.rstrip()

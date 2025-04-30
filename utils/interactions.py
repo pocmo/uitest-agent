@@ -4,7 +4,8 @@ from google.genai import types
 
 from utils.events import (
     AgentEvent, UserQueryEvent, AgentResponseEvent, ToolCallEvent,
-    FinalResponseEvent, ConversationStartEvent, ConversationEndEvent, ErrorEvent
+    FinalResponseEvent, ConversationStartEvent, ConversationEndEvent, ErrorEvent,
+    ToolResponseEvent
 )
 
 async def process_agent_interaction(
@@ -49,6 +50,11 @@ async def process_agent_interaction(
             function_calls = event.get_function_calls() if hasattr(event, 'get_function_calls') else []
             for call in function_calls:
                 yield ToolCallEvent(call.name, call.args)
+
+            # Process function responses
+            function_responses = event.get_function_responses() if hasattr(event, 'get_function_responses') else []
+            for response in function_responses:
+                yield ToolResponseEvent(response.name, response.response)
             
             # Handle final response
             if is_final:
