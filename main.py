@@ -57,7 +57,7 @@ async def async_main():
         user_id=USER_ID,
         session_id=SESSION_ID
     )
-    await print_agent_events(event_generator)
+    await print_agent_events(event_generator, args.verbose)
     await exit_stack.aclose()
 
 if __name__ == "__main__":

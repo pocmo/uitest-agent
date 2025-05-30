@@ -10,6 +10,8 @@ def parse_args():
                     default=None)
     parser.add_argument("--target", type=str, choices=["android", "ios", "web"], 
                     help="Target platform for the agent (required)", required=True)
+    parser.add_argument("--verbose", action="store_true", default=False,
+                        help="Print verbose output including tool responses.")
     
     args = parser.parse_args()
     

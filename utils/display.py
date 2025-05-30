@@ -89,7 +89,7 @@ def print_agent_info(agent_name: str, model_name: str, tools_count: int, target:
     console.print(platform_info)
     console.print()
 
-async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None]):
+async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None], verbose: bool = False):
     """Consume agent events and print them using Rich formatting."""
     async for event in event_generator:
         if isinstance(event, ConversationStartEvent):
@@ -146,7 +146,7 @@ async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None]):
             
             console.print(Panel(
                 tool_table,
-                title="🔧 TOOL",
+                title="🔧 TOOL CALL",
                 title_align="left",
                 border_style="green",
                 box=box.ROUNDED,
@@ -155,8 +155,29 @@ async def print_agent_events(event_generator: AsyncGenerator[AgentEvent, None]):
             ))
 
         elif isinstance(event, ToolResponseEvent):
-            # Display a simple line instead of a full panel for tool responses
-            console.print(f"[dim blue]← Received response from tool[/dim blue] [bold blue]{event.name}[/bold blue]")
+            if verbose:
+                # Create a table for tool response details
+                tool_response_table = Table(box=box.SIMPLE, show_header=False, padding=(0, 2))
+                tool_response_table.add_column("Property", style="blue")
+                tool_response_table.add_column("Value")
+
+                tool_response_table.add_row("Tool Name", event.name)
+                # Assuming event.response is a string or can be converted to a string
+                # If event.response is structured (e.g., JSON), you might want to format it
+                tool_response_table.add_row("Response", str(event.response)) # Ensure response is string
+
+                console.print(Panel(
+                    tool_response_table,
+                    title="↩️ TOOL RESPONSE",
+                    title_align="left",
+                    border_style="blue",
+                    box=box.ROUNDED,
+                    width=100,
+                    expand=False
+                ))
+            else:
+                # Display a simple line instead of a full panel for tool responses
+                console.print(f"[dim blue]← Received response from tool[/dim blue] [bold blue]{event.name}[/bold blue]")
 
         elif isinstance(event, FinalResponseEvent):
             # Truncate final response text to remove empty lines at the end
